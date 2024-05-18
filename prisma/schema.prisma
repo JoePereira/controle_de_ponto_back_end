@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id    String @id @default(uuid())
+  nome  String
+  HorarioEntrada HorarioEntrada[]
+  HorarioSaida   HorarioSaida[]
+}
+
+model HorarioEntrada {
+  id             String   @id @default(uuid())
+  codigoUsuario  String
+  dia            DateTime
+  horarioEntrada DateTime
+  usuario        Usuario @relation(fields: [codigoUsuario], references: [id])
+}
+
+model HorarioSaida {
+  id            String   @id @default(uuid())
+  codigoUsuario String
+  dia           DateTime
+  horarioSaida  DateTime
+  usuario       Usuario @relation(fields: [codigoUsuario], references: [id])
+}
